@@ -54,40 +54,12 @@ fs.readdir(path.join(__dirname, 'assets'), function(err, items) {
   for (let i = 0; i < items.length; i++) {
     fs.mkdir(path.join(__dirname, 'project-dist', 'assets', items[i]), { recursive: true }, err => {
       if (err) throw err;
-    });
-    fs.readdir(path.join(__dirname, 'assets', items[i]), function(err, files) {
-      for (let j = 0; j < files.length; j++) {
-        fs.copyFile(path.join(__dirname, 'assets', items[i], files[j]), path.join(__dirname, 'project-dist', 'assets', items[i], files[j]), err => {
-          if (err) throw err;
-        });
-      }
-      const arr1 = items;
-      fs.readdir(path.join(__dirname, 'project-dist', 'assets'), function(err, items2) {
-        const arr2 = items2;
-        if (arr2.length > arr1.length) {
-          const s = new Set(arr1);
-          const deleteFile = arr2.filter(e => !s.has(e));
-          for (let i = 0; i < deleteFile.length; i++) {
-            if (fs.exists(path.join(__dirname, 'project-dist', 'assets', deleteFile[i]))) {
-              fs.rmdir(path.join(__dirname, 'project-dist', 'assets', deleteFile[i]), err => {
-                if (err) throw err;
-              });
-            }
-          }
-        }
-        const arr3 = files;
-          fs.readdir(path.join(__dirname, 'project-dist', 'assets', items2[i]), function(err, files2) {
-            const arr4 = files2;
-            if (files2 && arr4.length > arr3.length) {
-              const s = new Set(arr3);
-              const deleteFile = arr4.filter(e => !s.has(e));
-              for (let j = 0; j < deleteFile.length; j++) {
-                fs.unlink(path.join(__dirname, 'project-dist', 'assets', items2[i], deleteFile[j]), err => {
-                  if (err) throw err;
-                });
-              }
-            }
+      fs.readdir(path.join(__dirname, 'assets', items[i]), function(err, files) {
+        for (let j = 0; j < files.length; j++) {
+          fs.copyFile(path.join(__dirname, 'assets', items[i], files[j]), path.join(__dirname, 'project-dist', 'assets', items[i], files[j]), err => {
+            if (err) throw err;
           });
+        }
       });
     });
   }
